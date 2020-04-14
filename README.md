@@ -196,7 +196,13 @@ if !strings.Contains(rr.Body.String(),expected) {
 }
 ```
 
+### Integration Tests(travis-ci):
 
+**.travis.yml**
+```
+language: go
+go: "1.13.5"
+```
 
 ### System Testing mit curl
 
