@@ -5,13 +5,14 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"github.com/pborman/getopt"
-	"os"
-	"strings"
-	_ "github.com/mattn/go-sqlite3"
-	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
+	"os"
+	"strings"
+
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/pborman/getopt"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Person struct {
@@ -121,11 +122,6 @@ func personLogin(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failure User doesn't exist", 400)
 		return
 	}
-	/*
-	   hashedPassword, err := bcrypt.GenerateFromPassword([]byte(p.Password), bcrypt.DefaultCost)
-	   println("")
-	   println(string(hashedPassword)+"  "+string(dbpassword))
-	*/
 
 	err = bcrypt.CompareHashAndPassword([]byte(dbpassword), []byte(p.Password)) //compare hash with password
 
@@ -169,8 +165,8 @@ func main() {
 	}
 
 	if *port == "" {
-		println("Server running on " + *ip + ":4000")
-		log.Fatal(http.ListenAndServe(*ip+":4000", nil))
+		println("Server running on " + *ip + ":8080")
+		log.Fatal(http.ListenAndServe(*ip+":8080", nil))
 	} else {
 		println("Server running on " + *ip + ":" + *port)
 		log.Fatal(http.ListenAndServe(*ip+":"+*port, nil))
