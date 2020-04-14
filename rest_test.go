@@ -25,7 +25,7 @@ func TestLoginSuccess(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personLogin)
+	handler := http.HandlerFunc(LoginHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 200 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -51,7 +51,7 @@ func TestLoginWithSomething(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personLogin)
+	handler := http.HandlerFunc(LoginHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -77,7 +77,7 @@ func TestLoginWithNumbers(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personLogin)
+	handler := http.HandlerFunc(LoginHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -103,7 +103,7 @@ func TestLoginWrongPassword(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personLogin)
+	handler := http.HandlerFunc(LoginHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -129,7 +129,7 @@ func TestLoginWrongUsername(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personLogin)
+	handler := http.HandlerFunc(LoginHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -152,7 +152,7 @@ func TestLoginWithoutJson(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personLogin)
+	handler := http.HandlerFunc(LoginHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -178,7 +178,7 @@ func TestLoginWithUserThatDoesntExist(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personLogin)
+	handler := http.HandlerFunc(LoginHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -192,7 +192,7 @@ func TestLoginWithUserThatDoesntExist(t *testing.T) {
 	}
 }
 
-func TestPersonCreate(t *testing.T) {
+func TestRegisterHandler(t *testing.T) {
 
 	var jsonStr = []byte(`{
 	"ID":"user2@tgm.ac.at",
@@ -206,7 +206,7 @@ func TestPersonCreate(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -220,7 +220,7 @@ func TestPersonCreate(t *testing.T) {
 	}
 }
 
-func TestPersonCreateDuplicate(t *testing.T) {
+func TestRegisterHandlerDuplicate(t *testing.T) {
 	var jsonStr = []byte(`{
 	"ID":"user@tgm.ac.at",
 	"Username": "user",
@@ -233,7 +233,7 @@ func TestPersonCreateDuplicate(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -247,7 +247,7 @@ func TestPersonCreateDuplicate(t *testing.T) {
 	}
 }
 
-func TestPersonCreateWithNumber(t *testing.T) {
+func TestRegisterHandlerWithNumber(t *testing.T) {
 	var jsonStr = []byte(`{
 	"ID":666,
 	"Username":1337,
@@ -260,7 +260,7 @@ func TestPersonCreateWithNumber(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -274,7 +274,7 @@ func TestPersonCreateWithNumber(t *testing.T) {
 	}
 }
 
-func TestPersonCreateSQLInjection(t *testing.T) {
+func TestRegisterHandlerSQLInjection(t *testing.T) {
 	var jsonStr = []byte(`{
 	"ID":"test'--",
 	"Username":"test",
@@ -287,7 +287,7 @@ func TestPersonCreateSQLInjection(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -301,7 +301,7 @@ func TestPersonCreateSQLInjection(t *testing.T) {
 	}
 }
 
-func TestPersonCreateWithSomething(t *testing.T) {
+func TestRegisterHandlerWithSomething(t *testing.T) {
 	var jsonStr = []byte(`{
 	"gdsg":666,
 	"sdg": 42
@@ -313,7 +313,7 @@ func TestPersonCreateWithSomething(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -327,7 +327,7 @@ func TestPersonCreateWithSomething(t *testing.T) {
 	}
 }
 
-func TestPersonCreateWithoutID(t *testing.T) {
+func TestRegisterHandlerWithoutID(t *testing.T) {
 	var jsonStr = []byte(`{
 	"ID":"",
 	"Username": "user",
@@ -340,7 +340,7 @@ func TestPersonCreateWithoutID(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -354,7 +354,7 @@ func TestPersonCreateWithoutID(t *testing.T) {
 	}
 }
 
-func TestPersonCreateWithoutUsername(t *testing.T) {
+func TestRegisterHandlerWithoutUsername(t *testing.T) {
 	var jsonStr = []byte(`{
 	"ID":"user@tgm.ac.at",
 	"Username": "",
@@ -367,7 +367,7 @@ func TestPersonCreateWithoutUsername(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -381,7 +381,7 @@ func TestPersonCreateWithoutUsername(t *testing.T) {
 	}
 }
 
-func TestPersonCreateWithoutPassword(t *testing.T) {
+func TestRegisterHandlerWithoutPassword(t *testing.T) {
 	var jsonStr = []byte(`{
 	"ID":"user@tgm.ac.at",
 	"Username": "user",
@@ -394,7 +394,7 @@ func TestPersonCreateWithoutPassword(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -407,7 +407,7 @@ func TestPersonCreateWithoutPassword(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 }
-func TestPersonCreateWithoutAt(t *testing.T) {
+func TestRegisterHandlerWithoutAt(t *testing.T) {
 	var jsonStr = []byte(`{
 	"ID":"user.tgm.ac.at",
 	"Username": "user",
@@ -420,7 +420,7 @@ func TestPersonCreateWithoutAt(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -434,7 +434,7 @@ func TestPersonCreateWithoutAt(t *testing.T) {
 	}
 }
 
-func TestPersonCreateWithEmptyJson(t *testing.T) {
+func TestRegisterHandlerWithEmptyJson(t *testing.T) {
 	var jsonStr = []byte(`{}`)
 
 	req, err := http.NewRequest("POST", "/register", bytes.NewBuffer(jsonStr))
@@ -443,7 +443,7 @@ func TestPersonCreateWithEmptyJson(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(personCreate)
+	handler := http.HandlerFunc(RegisterHandler)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != 400 {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -451,6 +451,59 @@ func TestPersonCreateWithEmptyJson(t *testing.T) {
 	}
 
 	expected := `Fuer die Registrierung muessen alle Daten (ID, Username, Password) gesendet werden.`
+	if !strings.Contains(rr.Body.String(), expected) {
+		t.Errorf("handler returned unexpected body: got %v want %v",
+			rr.Body.String(), expected)
+	}
+}
+
+func TestLoginWithGet(t *testing.T) {
+	var jsonStr = []byte(`{
+		"ID":"user.tgm.ac.at",
+		"Password":"password"
+		}`)
+
+	req, err := http.NewRequest("GET", "/login", bytes.NewBuffer(jsonStr))
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(LoginHandler)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != 405 {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, 400)
+	}
+
+	expected := `Available methods for /register are: POST`
+	if !strings.Contains(rr.Body.String(), expected) {
+		t.Errorf("handler returned unexpected body: got %v want %v",
+			rr.Body.String(), expected)
+	}
+}
+
+func TestRegisterWithGet(t *testing.T) {
+	var jsonStr = []byte(`{
+		"ID":"user.tgm.ac.at",
+		"Username": "user",
+		"Password": "password"
+		}`)
+
+	req, err := http.NewRequest("GET", "/register", bytes.NewBuffer(jsonStr))
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(RegisterHandler)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != 405 {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, 400)
+	}
+
+	expected := `Available methods for /register are: POST`
 	if !strings.Contains(rr.Body.String(), expected) {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
