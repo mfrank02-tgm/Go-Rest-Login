@@ -81,7 +81,6 @@ func personCreate(w http.ResponseWriter, r *http.Request) {
 		if ID == p.ID {
 			exist = true
 		}
-		//fmt.Println(Name + " " + Password)
 	}
 	if exist {
 		http.Error(w, "Failure User "+p.ID+" already exists", 400)
@@ -151,8 +150,8 @@ func printUsers() {
 
 func main() {
 
-	http.HandleFunc("/register", personCreate)
-	http.HandleFunc("/login", personLogin)
+	http.HandleFunc("/register", RegisterHandler)
+	http.HandleFunc("/login", LoginHandler)
 
 	port := getopt.StringLong("port", 'p', "", "Portnumber")
 	ip := getopt.StringLong("ip", 'i', "", "IP Adress")
@@ -170,5 +169,25 @@ func main() {
 	} else {
 		println("Server running on " + *ip + ":" + *port)
 		log.Fatal(http.ListenAndServe(*ip+":"+*port, nil))
+	}
+}
+
+func LoginHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodPost:
+		personLogin(w, r)
+	default:
+		w.Header().Set("Allow", "POST")
+		http.Error(w, "Available methods for /register are: POST", http.StatusMethodNotAllowed)
+	}
+}
+
+func RegisterHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodPost:
+		personCreate(w, r)
+	default:
+		w.Header().Set("Allow", "POST")
+		http.Error(w, "Available methods for /register are: POST", http.StatusMethodNotAllowed)
 	}
 }

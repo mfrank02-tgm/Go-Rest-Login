@@ -17,7 +17,7 @@ HandleFunc weißt `/register` der Funktion personCreate zu.
 
 HandleFunc weißt `/login` der Funktion personLogin zu.
 
-Der Port ist 4000.
+Der Port ist 8080.
 
 `http.NewServeMux()`
 
@@ -25,7 +25,7 @@ Der Port ist 4000.
 func main() {
     http.HandleFunc("/register", personCreate)
     http.HandleFunc("/login", personLogin)
-    err := http.ListenAndServe(":4000", mux)
+    err := http.ListenAndServe(":8080", mux)
     log.Fatal(err)
 }
 ```
@@ -147,7 +147,7 @@ module Go-Rest-Login
 mit `go get [packagename]`die Packages in die `go.mod` hinzu generieren.
 
 ```
-go 1.12
+go 1.14
 
 require (
 	github.com/mattn/go-sqlite3 v2.0.1+incompatible
@@ -209,24 +209,24 @@ go: "1.13.5"
 Register:
 
 ```
-$ curl -d '{"ID":"user@tgm.ac.at","Username":"user","Password":"password"}' -H "Content-Type: application/json" http://localhost:4000/register
+$ curl -d '{"ID":"user@tgm.ac.at","Username":"user","Password":"password"}' -H "Content-Type: application/json" http://localhost:8080/register
 Failure User user already exists
 ```
 
 ```
-$ curl -d '{"ID":"mfrank02@tgm.ac.at","Username":"mfrank02","Password":"test"}' -H "Content-Type: application/json" http://localhost:4000/register
+$ curl -d '{"ID":"mfrank02@tgm.ac.at","Username":"mfrank02","Password":"test"}' -H "Content-Type: application/json" http://localhost:8080/register
 Successfull User mfrank02@tgm.ac.at has been created
 ```
 
 Login
 
 ```
-$ curl -d '{"ID":"user@tgm.ac.at"r","Password":"password"}' -H "Content-Type: application/json" http://localhost:4000/login
+$ curl -d '{"ID":"user@tgm.ac.at"r","Password":"password"}' -H "Content-Type: application/json" http://localhost:8080/login
 Successfull
 ```
 
 ```
-$ curl -d '{"Name":666,"Password":42}' -H "Content-Type: application/json" http://localhost:4000/login
+$ curl -d '{"Name":666,"Password":42}' -H "Content-Type: application/json" http://localhost:8080/login
 json: cannot unmarshal number into Go struct field Person.Name of type string
 ```
 
@@ -284,7 +284,7 @@ Binary Ausfuehren mit command-line-flags
 Testen ob der Server laeuft:
 
 ```bash
-curl -d '{"ID":"user@tgm.ac.at"r","Password":"password"}' -H "Content-Type: application/json" http://localhost:4000/login
+curl -d '{"ID":"user@tgm.ac.at"r","Password":"password"}' -H "Content-Type: application/json" http://localhost:8080/login
 ```
 
 
