@@ -232,20 +232,6 @@ json: cannot unmarshal number into Go struct field Person.Name of type string
 
 
 
-99 670 Zeichen:
-
-```
-curl  -d '{"ID":".....[99 670 Zeichen]","Username":"user","Password":"password"}' -H "Content-Type: application/json" http://localhost:4000/register
-Successfull User ...[99 670 Zeichen] has been created
-```
-
-Curl erlaubt nicht mehr als 100 000 Zeichen. Limit in einer SQLite Datenbank für einen String ist eine Milliarde. Ein Limit darunter kann man mit dem folgenden Command setzten:
-
-```
--DSQLITE_MAX_LENGTH=123456789
-```
-
-
 
 ## Deployment
 
@@ -256,7 +242,7 @@ Curl erlaubt nicht mehr als 100 000 Zeichen. Limit in einer SQLite Datenbank fü
 Installation (git)
 
 ```bash
-git pull 
+git clone https://github.com/mfrank02-tgm/Go-Rest-Login.git
 ```
 Change Directory
 ```bash
