@@ -459,7 +459,7 @@ func TestRegisterHandlerWithEmptyJson(t *testing.T) {
 
 func TestLoginWithGet(t *testing.T) {
 	var jsonStr = []byte(`{
-		"ID":"user.tgm.ac.at",
+		"ID":"user@tgm.ac.at",
 		"Password":"password"
 		}`)
 
@@ -485,7 +485,7 @@ func TestLoginWithGet(t *testing.T) {
 
 func TestRegisterWithGet(t *testing.T) {
 	var jsonStr = []byte(`{
-		"ID":"user.tgm.ac.at",
+		"ID":"user@tgm.ac.at",
 		"Username": "user",
 		"Password": "password"
 		}`)

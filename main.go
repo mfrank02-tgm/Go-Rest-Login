@@ -178,7 +178,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		personLogin(w, r)
 	default:
 		w.Header().Set("Allow", "POST")
-		http.Error(w, "Available methods for /register are: POST", http.StatusMethodNotAllowed)
+		http.Error(w, "Available methods for /login are: POST", http.StatusMethodNotAllowed)
 	}
 }
 
