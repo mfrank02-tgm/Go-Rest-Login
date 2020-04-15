@@ -476,7 +476,7 @@ func TestLoginWithGet(t *testing.T) {
 			status, 400)
 	}
 
-	expected := `Available methods for /register are: POST`
+	expected := `Available methods for /login are: POST`
 	if !strings.Contains(rr.Body.String(), expected) {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
