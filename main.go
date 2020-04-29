@@ -148,10 +148,31 @@ func printUsers() {
 	}
 }
 
+func getusers(w http.ResponseWriter, r *http.Request) {
+	rows, err := db.Query("SELECT * FROM people")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	erg := make([]Person, 0)
+	for rows.Next() {
+		var s Person
+		rows.Scan(&s.ID, &s.Username, &s.Password)
+		erg = append(erg, s)
+	}
+	//fmt.Fprintf(w, s)
+
+	err = json.NewEncoder(w).Encode(erg)
+}
+
 func main() {
 
 	http.HandleFunc("/register", RegisterHandler)
 	http.HandleFunc("/login", LoginHandler)
+	http.HandleFunc("/users", getusers)
+	dir, _ := os.Getwd()
+	println(dir)
+	http.Handle("/", http.FileServer(http.Dir("./WebAssembly")))
 
 	port := getopt.StringLong("port", 'p', "", "Portnumber")
 	ip := getopt.StringLong("ip", 'i', "", "IP Adress")
